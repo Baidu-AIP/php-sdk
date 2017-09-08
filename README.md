@@ -1,22 +1,22 @@
 # 安装PHP SDK
 
 ## 目录结构
+```
+  ├── AipOcr.php                // OCR
+  ├── AipFace.php               // 人脸
+  ├── AipImageCensor.php        // 图像审核
+  ├── AipImageClassify.php      // 图像识别
+  ├── AipKg.php                 // 知识图谱
+  ├── AipSpeech.php             // 语音
+  └── lib
+      ├── AipHttpClient.php        //内部http请求类
+      ├── AipBCEUtil.php           //内部工具类
+      └── AipBase                  //Aip基类
+```
 
-   ├── AipOcr.php                // OCR
-   ├── AipFace.php               // 人脸
-   ├── AipImageCensor.php        // 图像审核
-   ├── AipImageClassify.php      // 图像识别
-   ├── AipKg.php                 // 知识图谱
-   ├── AipSpeech.php             // 语音
-   └── lib
-        ├── AipHttpClient.php        //内部http请求类
-        ├── AipBCEUtil.php           //内部工具类
-        └── AipBase                  //Aip基类
+** 支持 PHP版本：5.3+ **
 
-
-**支持 PHP版本：5.3+ **
-
-**直接使用php开发包步骤如下：**
+* *直接使用php开发包步骤如下：**
 
 1. 下载PHP SDK。
 
