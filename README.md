@@ -3,6 +3,7 @@
 ## 目录结构
 ```
   ├── AipOcr.php                // OCR
+  ├── AipNlp.php                // NLP
   ├── AipFace.php               // 人脸
   ├── AipImageCensor.php        // 图像审核
   ├── AipImageClassify.php      // 图像识别
