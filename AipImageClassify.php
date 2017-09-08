@@ -171,7 +171,7 @@ class AipImageClassify extends AipBase{
     public function logoDeleteBySign($contSign, $options=array()) {
         $data = array();
         
-        $data['cont_sign'] = $cont_sign;
+        $data['cont_sign'] = $contSign;
 
         $data = array_merge($data, $options);
 
