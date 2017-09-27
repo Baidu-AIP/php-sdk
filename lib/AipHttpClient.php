@@ -28,6 +28,7 @@ class AipHttpClient{
         $this->headers = $this->buildHeaders($headers);
         $this->connectTimeout = 60000;
         $this->socketTimeout = 60000;
+        $this->conf = array();
     }
 
     /**
@@ -47,6 +48,24 @@ class AipHttpClient{
     }    
 
     /**
+     * 配置
+     * @param array $conf
+     */
+    public function setConf($conf){
+        $this->conf = $conf;
+    }
+
+    /**
+     * 请求预处理
+     * @param resource $ch
+     */
+    public function prepare($ch){
+        foreach($this->conf as $key => $value){
+            curl_setopt($ch, $key, $value);
+        }
+    }    
+
+    /**
      * @param  string $url
      * @param  array $data HTTP POST BODY
      * @param  array $param HTTP URL
@@ -58,6 +77,7 @@ class AipHttpClient{
         $headers = array_merge($this->headers, $this->buildHeaders($headers));
 
         $ch = curl_init();
+        $this->prepare($ch);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HEADER, false);
@@ -98,6 +118,7 @@ class AipHttpClient{
         foreach($datas as $data){        
             $ch = curl_init();
             $chs[] = $ch;
+            $this->prepare($ch);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_HEADER, false);
@@ -141,6 +162,7 @@ class AipHttpClient{
         $headers = array_merge($this->headers, $this->buildHeaders($headers));
 
         $ch = curl_init();
+        $this->prepare($ch);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

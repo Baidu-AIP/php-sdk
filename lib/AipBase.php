@@ -65,7 +65,8 @@ class AipBase {
         $this->secretKey = trim($secretKey);
         $this->isCloudUser = null;
         $this->client = new AipHttpClient();
-        $this->version = '1_6_5';
+        $this->version = '1_6_6';
+        $this->proxies = array();
     }
 
     /**
@@ -92,6 +93,16 @@ class AipBase {
     public function setSocketTimeoutInMillis($ms){
         $this->client->setSocketTimeoutInMillis($ms);
     }
+
+    /**
+     * 代理
+     * @param array $proxy
+     * @return string
+     * 
+     */
+    public function setProxies($proxies){
+        $this->client->setConf($proxies);
+    } 
 
     /**
      * 处理请求参数

@@ -54,7 +54,10 @@ class AipSpeech extends AipBase{
     protected function proccessRequest($url, &$params, &$data, $headers){
 
         $token = isset($params['access_token']) ? $params['access_token'] : '';
-        $data['cuid'] = md5($token);
+
+        if(empty($data['cuid'])){
+            $data['cuid'] = md5($token);
+        }
 
         if($url === $this->asrUrl){
             $data['token'] = $token;
@@ -76,7 +79,7 @@ class AipSpeech extends AipBase{
 
         if($obj === null){
             $obj = array(
-                'content' => $content
+                '__json_decode_error' => $content
             );
         }
 
@@ -125,8 +128,8 @@ class AipSpeech extends AipBase{
 
         $result = $this->request($this->ttsUrl, $data, array());
 
-        if(!isset($result['err_no'])){
-            return $result['content'];
+        if(isset($result['__json_decode_error'])){
+            return $result['__json_decode_error'];
         }
 
         return $result;

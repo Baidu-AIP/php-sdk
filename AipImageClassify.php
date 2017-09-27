@@ -41,16 +41,28 @@ class AipImageClassify extends AipBase{
     private $logoSearchUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v2/logo';
 
     /**
-     * logo入库 logo_add api url
+     * logo商标识别—添加 logo_add api url
      * @var string
      */
     private $logoAddUrl = 'https://aip.baidubce.com/rest/2.0/realtime_search/v1/logo/add';
 
     /**
-     * 删除logo logo_delete api url
+     * logo商标识别—删除 logo_delete api url
      * @var string
      */
     private $logoDeleteUrl = 'https://aip.baidubce.com/rest/2.0/realtime_search/v1/logo/delete';
+
+    /**
+     * 动物识别 animal_detect api url
+     * @var string
+     */
+    private $animalDetectUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/animal';
+
+    /**
+     * 植物识别 plant_detect api url
+     * @var string
+     */
+    private $plantDetectUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/plant';
 
     /**
      * 图像主体检测 object_detect api url
@@ -101,7 +113,7 @@ class AipImageClassify extends AipBase{
     
     /**
      * logo商标识别接口
-     * 该请求用于检测和识别图片中的品牌LOGO信息。即对于输入的一张图片（可正常解码，且长宽比适宜）， 输出图片中LOGO的名称、位置和置信度。logo商标识别支持子库功能，包含入库、检索、删除三个子接口； 其中logo商标识别—查找子接口支持在logo底库（包含2万+logo）中进行查找，可直接使用。 当效果欠佳时，可以建立子库（请加入QQ群：649285136 联系工作人员完成建库）并自定义logo入库，提高识别效果。
+     * 该请求用于检测和识别图片中的品牌LOGO信息。即对于输入的一张图片（可正常解码，且长宽比适宜），输出图片中LOGO的名称、位置和置信度。 当效果欠佳时，可以建立子库（请加入QQ群：649285136 联系工作人员申请建库）并自定义logo入库，提高识别效果。
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
@@ -120,8 +132,8 @@ class AipImageClassify extends AipBase{
     }
     
     /**
-     * logo入库接口
-     * 输入一张图片（可正常解码，且长宽比适宜），输出识别出的logo位置、名称和置信度。
+     * logo商标识别—添加接口
+     * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式*
      * @param string $brief - brief，检索时带回。此处要传对应的name与code字段，name长度小于100B，code长度小于150B
@@ -141,8 +153,8 @@ class AipImageClassify extends AipBase{
     }
     
     /**
-     * 删除logo接口
-     * 删除logo
+     * logo商标识别—删除接口
+     * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
@@ -160,8 +172,8 @@ class AipImageClassify extends AipBase{
     }
     
     /**
-     * 删除logo接口
-     * 删除logo
+     * logo商标识别—删除接口
+     * 该接口尚在邀测阶段，使用该接口之前需要线下联系工作人员完成建库方可使用，请加入QQ群：649285136 联系相关人员。
      *
      * @param string $contSign - 图片签名（和image二选一，image优先级更高）
      * @param array $options - 可选参数对象，key: value都为string类型
@@ -176,6 +188,45 @@ class AipImageClassify extends AipBase{
         $data = array_merge($data, $options);
 
         return $this->request($this->logoDeleteUrl, $data);
+    }
+    
+    /**
+     * 动物识别接口
+     * 该请求用于识别一张图片。即对于输入的一张图片（可正常解码，且长宽比适宜），输出动物识别结果
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   top_num 返回预测得分top结果数，默认为6
+     * @return array
+     */
+    public function animalDetect($image, $options=array()) {
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->animalDetectUrl, $data);
+    }
+    
+    /**
+     * 植物识别接口
+     * 该请求用于识别一张图片。即对于输入的一张图片（可正常解码，且长宽比适宜），输出植物识别结果。
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function plantDetect($image, $options=array()) {
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->plantDetectUrl, $data);
     }
     
     /**
