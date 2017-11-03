@@ -7,6 +7,7 @@
   ├── AipFace.php               // 人脸
   ├── AipImageCensor.php        // 图像审核
   ├── AipImageClassify.php      // 图像识别
+  ├── AipImageSearch.php        // 图像搜索
   ├── AipKg.php                 // 知识图谱
   ├── AipSpeech.php             // 语音
   └── lib
