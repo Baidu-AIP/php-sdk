@@ -75,7 +75,7 @@ class AipSpeech extends AipBase{
      * @return mixed
      */
     protected function proccessResult($content){
-        $obj = json_decode($content, true);
+        $obj = json_decode($content, true, 512, JSON_BIGINT_AS_STRING);
 
         if($obj === null){
             $obj = array(
