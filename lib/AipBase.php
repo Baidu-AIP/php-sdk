@@ -17,7 +17,6 @@
 
 require_once 'AipHttpClient.php';
 require_once 'AipBCEUtil.php';
-require_once 'AipImageUtil.php';
 
 /**
  * Aip Base 基类
@@ -29,6 +28,12 @@ class AipBase {
      * @var string
      */
     protected $accessTokenUrl = 'https://aip.baidubce.com/oauth/2.0/token';
+
+     /**
+     * 反馈接口
+     * @var string
+     */
+    protected $reportUrl = 'https://aip.baidubce.com/rpc/2.0/feedback/v1/report';
 
     /**
      * appId
@@ -65,7 +70,7 @@ class AipBase {
         $this->secretKey = trim($secretKey);
         $this->isCloudUser = null;
         $this->client = new AipHttpClient();
-        $this->version = '1_6_9';
+        $this->version = '2_0_0';
         $this->proxies = array();
     }
 
@@ -297,7 +302,7 @@ class AipBase {
             'client_id' => $this->apiKey,
             'client_secret' => $this->secretKey,
         ));
-
+        
         $obj = json_decode($response['content'], true, 512, JSON_BIGINT_AS_STRING);
 
         $this->isCloudUser = !$this->isPermission($obj);
@@ -360,4 +365,18 @@ class AipBase {
         return $headers;
     }
 
+    /**
+     * 反馈
+     *
+     * @param array $feedbacks
+     * @return array
+     */
+    public function report($feedback){
+
+        $data = array();
+        
+        $data['feedback'] = $feedback;
+
+        return $this->request($this->reportUrl, $data);
+    }
 }

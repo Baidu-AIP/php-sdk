@@ -16,72 +16,61 @@
 */
 
 require_once 'lib/AipBase.php';
-
-/**
- * 自然语言处理NLP
- */
-class AipNlp extends AipBase{
+class AipNlp extends AipBase {
 
     /**
-     * 分词
-     * @var string
-     */
-    private $wordsegUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/wordseg';
-
-    /**
-     * 词性标注
-     * @var string
-     */
-    private $wordposUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/wordpos';
-
-    /**
-     * 词向量
-     * @var string
-     */
-    private $wordEmbeddingUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_vec';
-
-    /**
-     * 词相似度
-     * @var string
-     */
-    private $wordSimEmbeddingUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_sim';
-
-    /**
-     * 中文DNN语言模型
-     * @var string
-     */
-    private $dnnlmUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/dnnlm_cn';
-
-    /**
-     * 短文本相似度
-     * @var string
-     */
-    private $simnetUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet';
-
-    /**
-     * 情感观点挖掘
-     * @var string
-     */
-    private $commentTagUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/comment_tag';
-
-    /**
-     * 词法分析
+     * 词法分析 lexer api url
      * @var string
      */
     private $lexerUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer';
 
     /**
-     * 情感分析接口
+     * 词法分析（定制版） lexer_custom api url
      * @var string
      */
-    private $sentimentClassifyUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify';
+    private $lexerCustomUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer_custom';
 
     /**
-     * 依存分析接口
+     * 依存句法分析 dep_parser api url
      * @var string
      */
     private $depParserUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/depparser';
 
+    /**
+     * 词向量表示 word_embedding api url
+     * @var string
+     */
+    private $wordEmbeddingUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_vec';
+
+    /**
+     * DNN语言模型 dnnlm_cn api url
+     * @var string
+     */
+    private $dnnlmCnUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/dnnlm_cn';
+
+    /**
+     * 词义相似度 word_sim_embedding api url
+     * @var string
+     */
+    private $wordSimEmbeddingUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_sim';
+
+    /**
+     * 短文本相似度 simnet api url
+     * @var string
+     */
+    private $simnetUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet';
+
+    /**
+     * 评论观点抽取 comment_tag api url
+     * @var string
+     */
+    private $commentTagUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v2/comment_tag';
+
+    /**
+     * 情感倾向分析 sentiment_classify api url
+     * @var string
+     */
+    private $sentimentClassifyUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify';
 
     /**
      * 格式化结果
@@ -93,158 +82,190 @@ class AipNlp extends AipBase{
     }
 
     /**
-     * 分词
-     * @param  string $query 自然语言
-     * @param  array $options 可选参数
+     * 词法分析接口
+     *
+     * @param string $text - 待分析文本（目前仅支持GBK编码），长度不超过65536字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
      * @return array
      */
-    public function wordseg($query, $options=array()){
+    public function lexer($text, $options=array()){
 
         $data = array();
-        $data['query'] = urlencode(mb_convert_encoding($query, 'GBK', 'UTF8'));
-
-        return $this->request($this->wordsegUrl, urldecode(json_encode($data)));
-    }
-
-    /**
-     * 词性标注
-     * @param  string $query 自然语言
-     * @param  array $options 可选参数
-     * @return array
-     */
-    public function wordpos($query, $options=array()){
         
-        $data = array();
-        $data['query'] = urlencode(mb_convert_encoding($query, 'GBK', 'UTF8'));
-
-        return $this->request($this->wordposUrl, urldecode(json_encode($data)));
-    }
-
-    /**
-     * 词向量
-     * @param  string $word 自然语言
-     * @return array
-     */
-    public function wordEmbedding($word, $options=array()){
-
-        $data = array();
-        $data['word'] = urlencode(mb_convert_encoding($word, 'GBK', 'UTF8'));
+        $data['text'] = $text;
 
         $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
 
-        return $this->request($this->wordEmbeddingUrl, urldecode(json_encode($data)));
+        return $this->request($this->lexerUrl, $data);
     }
 
     /**
-     * 词相似度
-     * @param  string $word1 自然语言1
-     * @param  string $word2 自然语言2
+     * 词法分析（定制版）接口
+     *
+     * @param string $text - 待分析文本（目前仅支持GBK编码），长度不超过65536字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
      * @return array
      */
-    public function wordSimEmbedding($word1, $word2, $options=array()){
+    public function lexerCustom($text, $options=array()){
 
         $data = array();
-        $data['word_1'] = urlencode(mb_convert_encoding($word1, 'GBK', 'UTF8'));
-        $data['word_2'] = urlencode(mb_convert_encoding($word2, 'GBK', 'UTF8'));
+        
+        $data['text'] = $text;
 
         $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
 
-        return $this->request($this->wordSimEmbeddingUrl, urldecode(json_encode($data)));
+        return $this->request($this->lexerCustomUrl, $data);
     }
 
     /**
-     * 中文DNN语言模型
-     * @param  string $text 自然语言
-     * @param  array $options 可选参数
-     * @return array
-     */
-    public function dnnlm($text, $options=array()){
-
-        $data = array();
-        $data['text'] = urlencode(mb_convert_encoding($text, 'GBK', 'UTF8'));
-
-        $data = array_merge($data, $options);
-
-        return $this->request($this->dnnlmUrl, urldecode(json_encode($data)));
-    }
-
-    /**
-     * 短文本相似度
-     * @param  string $text1 自然语言1
-     * @param  string $text2 自然语言2
-     * @param  array $options 可选参数
-     * @return array
-     */
-    public function simnet($text1, $text2, $options=array()){
-
-        $data = array();
-        $data['text_1'] = urlencode(mb_convert_encoding($text1, 'GBK', 'UTF8'));
-        $data['text_2'] = urlencode(mb_convert_encoding($text2, 'GBK', 'UTF8'));
-
-        $data = array_merge($data, $options);
-
-        return $this->request($this->simnetUrl, urldecode(json_encode($data)));
-    }
-
-    /**
-     * 情感观点挖掘
-     * @param  string $text 自然语言
-     * @param  array $options 可选参数
-     * @return array
-     */
-    public function commentTag($text, $options=array()){
-
-        $data = array();
-        $data['text'] = urlencode(mb_convert_encoding($text, 'GBK', 'UTF8'));
-
-        $data = array_merge($data, $options);
-
-        return $this->request($this->commentTagUrl, urldecode(json_encode($data)));
-    }
-
-    /**
-     * 词法分析
-     * @param  string $text 文本
-     * @return array
-     */
-    public function lexer($text){
-
-        $data = array();
-        $data['text'] = urlencode(mb_convert_encoding($text, 'GBK', 'UTF8'));
-
-        return $this->request($this->lexerUrl, urldecode(json_encode($data)));
-    }
-
-    /**
-     * 情感分析
-     * @param  string $text 自然语言
-     * @param  array $options 可选参数
-     * @return array
-     */
-    public function sentimentClassify($text, $options=array()){
-
-        $data = array();
-        $data['text'] = urlencode(mb_convert_encoding($text, 'GBK', 'UTF8'));
-
-        $data = array_merge($data, $options);
-
-        return $this->request($this->sentimentClassifyUrl, urldecode(json_encode($data)));
-    }
-
-    /**
-     * 依存分析
-     * @param  string $text 自然语言
-     * @param  array $options 可选参数
+     * 依存句法分析接口
+     *
+     * @param string $text - 待分析文本（目前仅支持GBK编码），长度不超过256字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   mode 模型选择。默认值为0，可选值mode=0（对应web模型）；mode=1（对应query模型）
      * @return array
      */
     public function depParser($text, $options=array()){
 
         $data = array();
-        $data['text'] = urlencode(mb_convert_encoding($text, 'GBK', 'UTF8'));
+        
+        $data['text'] = $text;
 
         $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
 
-        return $this->request($this->depParserUrl, urldecode(json_encode($data)));
+        return $this->request($this->depParserUrl, $data);
     }
 
+    /**
+     * 词向量表示接口
+     *
+     * @param string $word - 文本内容（GBK编码），最大64字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function wordEmbedding($word, $options=array()){
+
+        $data = array();
+        
+        $data['word'] = $word;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->wordEmbeddingUrl, $data);
+    }
+
+    /**
+     * DNN语言模型接口
+     *
+     * @param string $text - 文本内容（GBK编码），最大512字节，不需要切词
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function dnnlm($text, $options=array()){
+
+        $data = array();
+        
+        $data['text'] = $text;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->dnnlmCnUrl, $data);
+    }
+
+    /**
+     * 词义相似度接口
+     *
+     * @param string $word1 - 词1（GBK编码），最大64字节
+     * @param string $word2 - 词1（GBK编码），最大64字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   mode 预留字段，可选择不同的词义相似度模型。默认值为0，目前仅支持mode=0
+     * @return array
+     */
+    public function wordSimEmbedding($word1, $word2, $options=array()){
+
+        $data = array();
+        
+        $data['word_1'] = $word1;
+        $data['word_2'] = $word2;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->wordSimEmbeddingUrl, $data);
+    }
+
+    /**
+     * 短文本相似度接口
+     *
+     * @param string $text1 - 待比较文本1（GBK编码），最大512字节
+     * @param string $text2 - 待比较文本2（GBK编码），最大512字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   model 默认为"BOW"，可选"BOW"、"CNN"与"GRNN"
+     * @return array
+     */
+    public function simnet($text1, $text2, $options=array()){
+
+        $data = array();
+        
+        $data['text_1'] = $text1;
+        $data['text_2'] = $text2;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->simnetUrl, $data);
+    }
+
+    /**
+     * 评论观点抽取接口
+     *
+     * @param string $text - 评论内容（GBK编码），最大10240字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   type 评论行业类型，默认为4（餐饮美食）
+     * @return array
+     */
+    public function commentTag($text, $options=array()){
+
+        $data = array();
+        
+        $data['text'] = $text;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->commentTagUrl, $data);
+    }
+
+    /**
+     * 情感倾向分析接口
+     *
+     * @param string $text - 文本内容（GBK编码），最大102400字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function sentimentClassify($text, $options=array()){
+
+        $data = array();
+        
+        $data['text'] = $text;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->sentimentClassifyUrl, $data);
+    }
 }

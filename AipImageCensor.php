@@ -51,13 +51,18 @@ class AipImageCensor extends AipBase{
     private $imageCensorCombUrl = 'https://aip.baidubce.com/api/v1/solution/direct/img_censor';
 
     /**
+     * @var string
+     */
+    private $imageCensorUserDefinedUrl = 'https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/user_defined';
+
+    /**
      * @param  string $image 图像读取
      * @return array
      */
     public function antiPorn($image){
 
         $data = array();
-        $data['image'] = $image;
+        $data['image'] = base64_encode($image);
 
         return $this->request($this->antiPornUrl, $data);
     }
@@ -79,89 +84,13 @@ class AipImageCensor extends AipBase{
     }
 
     /**
-     * 格式检查
-     * @param  string $url
-     * @param  array $data
-     * @return array
-     */
-    protected function validate($url, &$data){
-
-        if(!is_array($data)){
-            return true;
-        }
-
-        if(isset($data['images'])){
-            $imageB64s = array();
-            foreach($data['images'] as $image){
-                $imageInfo = AipImageUtil::getImageInfo($image);
-
-                //图片格式检查
-                if(!in_array($imageInfo['mime'], array('image/jpeg', 'image/png', 'image/bmp', 'image/gif'))){
-                    return array(
-                        'error_code' => 'SDK109',
-                        'error_msg' => 'unsupported image format',
-                    );
-                }
-
-                //编码后小于4m
-                $imageB64 = base64_encode($image);
-                if(strlen($imageB64) >= 4 * 1024 * 1024){
-                    return array(
-                        'error_code' => 'SDK100',
-                        'error_msg' => 'image size error',
-                    );
-                }
-
-                $imageB64s[] = $imageB64;
-            }
-
-            $data['images'] = implode(',', $imageB64s);
-        }else if(isset($data['image'])){
-            $imageInfo = AipImageUtil::getImageInfo($data['image']);
-            $data['image'] = base64_encode($data['image']);
-
-            //Gif 格式校验
-            if($url == $this->antiPornGifUrl){
-
-                if($imageInfo['mime'] != 'image/gif'){
-                    return array(
-                        'error_code' => 'SDK109',
-                        'error_msg' => 'unsupported image format',
-                    );
-                }
-
-                return true;
-            }
-
-            //图片格式检查
-            if(!in_array($imageInfo['mime'], array('image/jpeg', 'image/png', 'image/bmp', 'image/gif'))){
-                return array(
-                    'error_code' => 'SDK109',
-                    'error_msg' => 'unsupported image format',
-                );
-            }
-
-            //编码后小于4m
-            if(strlen($data['image']) >= 4 * 1024 * 1024){
-                return array(
-                    'error_code' => 'SDK100',
-                    'error_msg' => 'image size error',
-                );
-            }
-
-        }
-
-        return true;
-    }
-
-    /**
      * @param  string $image 图像读取
      * @return array
      */
     public function antiPornGif($image){
 
         $data = array();
-        $data['image'] = $image;
+        $data['image'] = base64_encode($image);
 
         return $this->request($this->antiPornGifUrl, $data);
     }
@@ -173,7 +102,7 @@ class AipImageCensor extends AipBase{
     public function antiTerror($image){
 
         $data = array();
-        $data['image'] = $image;
+        $data['image'] = base64_encode($image);
 
         return $this->request($this->antiTerrorUrl, $data);
     }
@@ -197,7 +126,12 @@ class AipImageCensor extends AipBase{
 
         $isUrl = substr(trim($images[0]), 0, 4) === 'http';
         if(!$isUrl){
-            $data['images'] = $images;
+            $arr = array();
+            
+            foreach($images as $image){
+                $arr[] = base64_encode($image);
+            }
+            $data['images'] = implode(',', $arr);
         }else{
             $urls = array();
             
@@ -235,5 +169,23 @@ class AipImageCensor extends AipBase{
         return $this->request($this->imageCensorCombUrl, json_encode($data), array(
             'Content-Type' => 'application/json',
         ));
+    }
+
+    /**
+     * @param  string $image 图像
+     * @return array
+     */
+    public function imageCensorUserDefined($image){
+        
+        $data = array();
+
+        $isUrl = substr(trim($image), 0, 4) === 'http';
+        if(!$isUrl){
+            $data['image'] = base64_encode($image);
+        }else{
+            $data['imgUrl'] = $image;
+        }
+
+        return $this->request($this->imageCensorUserDefinedUrl, $data);     
     }
 }

@@ -16,11 +16,7 @@
 */
 
 require_once 'lib/AipBase.php';
-
-/**
- * 图像搜索
- */
-class AipImageSearch extends AipBase{
+class AipImageSearch extends AipBase {
 
     /**
      * 相同图检索—入库 same_hq_add api url
@@ -77,9 +73,9 @@ class AipImageSearch extends AipBase{
     private $productDeleteUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/realtime_search/product/delete';
 
     
+
     /**
      * 相同图检索—入库接口
-     * 该请求用于实时检索相同图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相同的图片集合。相同图检索包含入库、检索、删除三个子接口；**在正式使用之前请加入QQ群：649285136 联系工作人员完成建库并调用入库接口完成图片入库**。
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
@@ -87,7 +83,8 @@ class AipImageSearch extends AipBase{
      *   brief 检索时原样带回,最长256B。
      * @return array
      */
-    public function sameHqAdd($image, $options=array()) {
+    public function sameHqAdd($image, $options=array()){
+
         $data = array();
         
         $data['image'] = base64_encode($image);
@@ -96,17 +93,17 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->sameHqAddUrl, $data);
     }
-    
+
     /**
      * 相同图检索—检索接口
-     * 使用该接口前，请加入QQ群：649285136 ，联系工作人员完成建库。
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      * @return array
      */
-    public function sameHqSearch($image, $options=array()) {
+    public function sameHqSearch($image, $options=array()){
+
         $data = array();
         
         $data['image'] = base64_encode($image);
@@ -115,17 +112,17 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->sameHqSearchUrl, $data);
     }
-    
+
     /**
      * 相同图检索—删除接口
-     * 删除相同图
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      * @return array
      */
-    public function sameHqDeleteByImage($image, $options=array()) {
+    public function sameHqDeleteByImage($image, $options=array()){
+
         $data = array();
         
         $data['image'] = base64_encode($image);
@@ -134,17 +131,17 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->sameHqDeleteUrl, $data);
     }
-    
+
     /**
      * 相同图检索—删除接口
-     * 删除相同图
      *
      * @param string $contSign - 图片签名（和image二选一，image优先级更高）
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      * @return array
      */
-    public function sameHqDeleteBySign($contSign, $options=array()) {
+    public function sameHqDeleteBySign($contSign, $options=array()){
+
         $data = array();
         
         $data['cont_sign'] = $contSign;
@@ -153,10 +150,9 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->sameHqDeleteUrl, $data);
     }
-    
+
     /**
      * 相似图检索—入库接口
-     * 该请求用于实时检索相似图片集合。即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建图库中相似的图片集合。相似图检索包含入库、检索、删除三个子接口；**在正式使用之前请加入QQ群：649285136 联系工作人员完成建库并调用入库接口完成图片入库**。
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
@@ -164,7 +160,8 @@ class AipImageSearch extends AipBase{
      *   brief 检索时原样带回,最长256B。
      * @return array
      */
-    public function similarAdd($image, $options=array()) {
+    public function similarAdd($image, $options=array()){
+
         $data = array();
         
         $data['image'] = base64_encode($image);
@@ -173,17 +170,17 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->similarAddUrl, $data);
     }
-    
+
     /**
      * 相似图检索—检索接口
-     * 使用该接口前，请加入QQ群：649285136 ，联系工作人员完成建库。
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      * @return array
      */
-    public function similarSearch($image, $options=array()) {
+    public function similarSearch($image, $options=array()){
+
         $data = array();
         
         $data['image'] = base64_encode($image);
@@ -192,17 +189,17 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->similarSearchUrl, $data);
     }
-    
+
     /**
      * 相似图检索—删除接口
-     * 删除相似图
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      * @return array
      */
-    public function similarDeleteByImage($image, $options=array()) {
+    public function similarDeleteByImage($image, $options=array()){
+
         $data = array();
         
         $data['image'] = base64_encode($image);
@@ -211,17 +208,17 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->similarDeleteUrl, $data);
     }
-    
+
     /**
      * 相似图检索—删除接口
-     * 删除相似图
      *
      * @param string $contSign - 图片签名（和image二选一，image优先级更高）
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      * @return array
      */
-    public function similarDeleteBySign($contSign, $options=array()) {
+    public function similarDeleteBySign($contSign, $options=array()){
+
         $data = array();
         
         $data['cont_sign'] = $contSign;
@@ -230,12 +227,9 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->similarDeleteUrl, $data);
     }
-    
+
     /**
      * 商品检索—入库接口
-     * 1、该请求用于实时检索商品类型图片相同或相似的图片集合，适用于电商平台或商品展示等场景，即对于输入的一张图片（可正常解码，且长宽比适宜），返回自建商品库中相同或相似的图片集合。
-2、商品检索包含入库、检索、删除三个子接口；**在正式使用之前请在[控制台](https://console.bce.baidu.com/ai/#/ai/imagesearch/overview/index "控制台")创建应用后，在应用详情页申请建库，建库成功后方可正常使用入库、检索、删除三个接口**。
-
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
@@ -245,7 +239,8 @@ class AipImageSearch extends AipBase{
      *   class_id2 商品分类维度1，支持1-60范围内的整数。检索时可圈定该分类维度进行检索
      * @return array
      */
-    public function productAdd($image, $options=array()) {
+    public function productAdd($image, $options=array()){
+
         $data = array();
         
         $data['image'] = base64_encode($image);
@@ -254,12 +249,9 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->productAddUrl, $data);
     }
-    
+
     /**
      * 商品检索—检索接口
-     * 完成入库后，可使用该接口实现商品检索。
-**请注意，检索接口不返回原图，仅反馈当前填写的brief信息，请调用入库接口时尽量填写可关联至本地图库的图片id或者图片url等信息**
-
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
@@ -268,7 +260,8 @@ class AipImageSearch extends AipBase{
      *   class_id2 商品分类维度1，支持1-60范围内的整数。检索时可圈定该分类维度进行检索
      * @return array
      */
-    public function productSearch($image, $options=array()) {
+    public function productSearch($image, $options=array()){
+
         $data = array();
         
         $data['image'] = base64_encode($image);
@@ -277,17 +270,17 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->productSearchUrl, $data);
     }
-    
+
     /**
      * 商品检索—删除接口
-     * 删除商品
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      * @return array
      */
-    public function productDeleteByImage($image, $options=array()) {
+    public function productDeleteByImage($image, $options=array()){
+
         $data = array();
         
         $data['image'] = base64_encode($image);
@@ -296,17 +289,17 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->productDeleteUrl, $data);
     }
-    
+
     /**
      * 商品检索—删除接口
-     * 删除商品
      *
      * @param string $contSign - 图片签名（和image二选一，image优先级更高）
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      * @return array
      */
-    public function productDeleteBySign($contSign, $options=array()) {
+    public function productDeleteBySign($contSign, $options=array()){
+
         $data = array();
         
         $data['cont_sign'] = $contSign;
@@ -315,5 +308,5 @@ class AipImageSearch extends AipBase{
 
         return $this->request($this->productDeleteUrl, $data);
     }
-    
 }
+
