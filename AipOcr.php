@@ -98,6 +98,12 @@ class AipOcr extends AipBase {
     private $receiptUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/receipt';
 
     /**
+     * 自定义模版文字识别 custom api url
+     * @var string
+     */
+    private $customUrl = 'https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise';
+
+    /**
      * 表格文字识别 table_recognize api url
      * @var string
      */
@@ -117,8 +123,8 @@ class AipOcr extends AipBase {
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return array
@@ -140,8 +146,8 @@ class AipOcr extends AipBase {
      * @param string $url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return array
@@ -163,7 +169,7 @@ class AipOcr extends AipBase {
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   probability 是否返回识别结果中每一行的置信度
      * @return array
      */
@@ -185,8 +191,8 @@ class AipOcr extends AipBase {
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
      *   probability 是否返回识别结果中每一行的置信度
@@ -210,8 +216,8 @@ class AipOcr extends AipBase {
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
      *   probability 是否返回识别结果中每一行的置信度
@@ -235,7 +241,7 @@ class AipOcr extends AipBase {
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   vertexes_location 是否返回文字外接多边形顶点位置，不支持单字位置。默认为false
      *   probability 是否返回识别结果中每一行的置信度
      * @return array
@@ -257,8 +263,8 @@ class AipOcr extends AipBase {
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return array
@@ -280,8 +286,8 @@ class AipOcr extends AipBase {
      * @param string $url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br/>- CHN_ENG：中英文混合；<br/>- ENG：英文；<br/>- POR：葡萄牙语；<br/>- FRE：法语；<br/>- GER：德语；<br/>- ITA：意大利语；<br/>- SPA：西班牙语；<br/>- RUS：俄语；<br/>- JAP：日语；<br/>- KOR：韩语；
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   language_type 识别语言类型，默认为CHN_ENG。可选值包括：<br>- CHN_ENG：中英文混合；<br>- ENG：英文；<br>- POR：葡萄牙语；<br>- FRE：法语；<br>- GER：德语；<br>- ITA：意大利语；<br>- SPA：西班牙语；<br>- RUS：俄语；<br>- JAP：日语；<br>- KOR：韩语；
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      *   probability 是否返回识别结果中每一行的置信度
      * @return array
@@ -303,7 +309,7 @@ class AipOcr extends AipBase {
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      * @return array
      */
@@ -324,7 +330,7 @@ class AipOcr extends AipBase {
      * @param string $url - 图片完整URL，URL长度不超过1024字节，URL对应的图片base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式，当image字段存在时url字段失效
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_language 是否检测语言，默认不检测。当前支持（中文、英语、日语、韩语）
      * @return array
      */
@@ -346,7 +352,7 @@ class AipOcr extends AipBase {
      * @param string $idCardSide - front：身份证正面；back：身份证背面
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   detect_risk 是否开启身份证风险类型(身份证复印件、临时身份证、身份证翻拍、修改过的身份证)功能，默认不开启，即：false。可选值:true-开启；false-不开启
      * @return array
      */
@@ -387,7 +393,7 @@ class AipOcr extends AipBase {
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      * @return array
      */
     public function drivingLicense($image, $options=array()){
@@ -407,7 +413,7 @@ class AipOcr extends AipBase {
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
      * @return array
      */
@@ -470,7 +476,7 @@ class AipOcr extends AipBase {
      *   recognize_granularity 是否定位单字符位置，big：不定位单字符位置，默认值；small：定位单字符位置
      *   probability 是否返回识别结果中每一行的置信度
      *   accuracy normal 使用快速服务，1200ms左右时延；缺省或其它值使用高精度服务，1600ms左右时延
-     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br/>- true：检测朝向；<br/>- false：不检测朝向。
+     *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
      * @return array
      */
     public function receipt($image, $options=array()){
@@ -482,6 +488,27 @@ class AipOcr extends AipBase {
         $data = array_merge($data, $options);
 
         return $this->request($this->receiptUrl, $data);
+    }
+
+    /**
+     * 自定义模版文字识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param string $templateSign - 您在自定义文字识别平台制作的模版的ID
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function custom($image, $templateSign, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+        $data['templateSign'] = $templateSign;
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->customUrl, $data);
     }
 
     /**

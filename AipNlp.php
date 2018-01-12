@@ -73,6 +73,12 @@ class AipNlp extends AipBase {
     private $sentimentClassifyUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/sentiment_classify';
 
     /**
+     * 文本标签 keyword api url
+     * @var string
+     */
+    private $keywordUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/keyword';
+
+    /**
      * 格式化结果
      * @param $content string
      * @return mixed
@@ -267,5 +273,27 @@ class AipNlp extends AipBase {
         $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
 
         return $this->request($this->sentimentClassifyUrl, $data);
+    }
+
+    /**
+     * 文本标签接口
+     *
+     * @param string $title - 篇章的标题，最大80字节
+     * @param string $content - 篇章的正文，最大65535字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function keyword($title, $content, $options=array()){
+
+        $data = array();
+        
+        $data['title'] = $title;
+        $data['content'] = $content;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->keywordUrl, $data);
     }
 }

@@ -66,7 +66,7 @@ class AipKg extends AipBase {
      * @param string $urlPattern - url pattern
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   limit_count 限制解析数量limit_count为0时进行全量任务，limit_count>0时只解析limit_count数量的页面
+     *   limit_count 限制解析数量limit_count为0时进行全量任务，limit_count&gt;0时只解析limit_count数量的页面
      * @return array
      */
     public function createTask($name, $templateContent, $inputMappingFile, $outputFile, $urlPattern, $options=array()){
