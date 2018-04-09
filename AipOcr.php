@@ -104,6 +104,12 @@ class AipOcr extends AipBase {
     private $customUrl = 'https://aip.baidubce.com/rest/2.0/solution/v1/iocr/recognise';
 
     /**
+     * 表格文字识别同步接口 form api url
+     * @var string
+     */
+    private $formUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/form';
+
+    /**
      * 表格文字识别 table_recognize api url
      * @var string
      */
@@ -349,7 +355,7 @@ class AipOcr extends AipBase {
      * 身份证识别接口
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param string $idCardSide - front：身份证正面；back：身份证背面
+     * @param string $idCardSide - front：身份证含照片的一面；back：身份证带国徽的一面
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
      *   detect_direction 是否检测图像朝向，默认不检测，即：false。朝向是指输入图像是正常方向、逆时针旋转90/180/270度。可选值包括:<br>- true：检测朝向；<br>- false：不检测朝向。
@@ -509,6 +515,25 @@ class AipOcr extends AipBase {
         $data = array_merge($data, $options);
 
         return $this->request($this->customUrl, $data);
+    }
+
+    /**
+     * 表格文字识别同步接口接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function form($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->formUrl, $data);
     }
 
     /**

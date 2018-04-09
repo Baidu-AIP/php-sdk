@@ -70,7 +70,7 @@ class AipBase {
         $this->secretKey = trim($secretKey);
         $this->isCloudUser = null;
         $this->client = new AipHttpClient();
-        $this->version = '2_2_0';
+        $this->version = '2_2_2';
         $this->proxies = array();
     }
 
@@ -238,7 +238,7 @@ class AipBase {
      * @return mixed
      */
     protected function proccessResult($content){
-        return json_decode($content, true, 512, JSON_BIGINT_AS_STRING);
+        return json_decode($content, true);
     }
 
     /**
@@ -271,7 +271,7 @@ class AipBase {
     private function readAuthObj(){
         $content = @file_get_contents($this->getAuthFilePath());
         if($content !== false){
-            $obj = json_decode($content, true, 512, JSON_BIGINT_AS_STRING);
+            $obj = json_decode($content, true);
             $this->isCloudUser = $obj['is_cloud_user'];
             $obj['is_read'] = true;
             if($this->isCloudUser || $obj['time'] + $obj['expires_in'] - 30 > time()){
@@ -303,7 +303,7 @@ class AipBase {
             'client_secret' => $this->secretKey,
         ));
         
-        $obj = json_decode($response['content'], true, 512, JSON_BIGINT_AS_STRING);
+        $obj = json_decode($response['content'], true);
 
         $this->isCloudUser = !$this->isPermission($obj);
         return $obj;

@@ -19,6 +19,12 @@ require_once 'lib/AipBase.php';
 class AipImageClassify extends AipBase {
 
     /**
+     * 通用物体识别 advanced_general api url
+     * @var string
+     */
+    private $advancedGeneralUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general';
+
+    /**
      * 菜品识别 dish_detect api url
      * @var string
      */
@@ -67,6 +73,25 @@ class AipImageClassify extends AipBase {
     private $objectDetectUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/object_detect';
 
     
+
+    /**
+     * 通用物体识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function advancedGeneral($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->advancedGeneralUrl, $data);
+    }
 
     /**
      * 菜品识别接口
