@@ -70,7 +70,7 @@ class AipBase {
         $this->secretKey = trim($secretKey);
         $this->isCloudUser = null;
         $this->client = new AipHttpClient();
-        $this->version = '2_2_2';
+        $this->version = '2_2_3';
         $this->proxies = array();
     }
 
@@ -379,4 +379,16 @@ class AipBase {
 
         return $this->request($this->reportUrl, $data);
     }
+
+    /**
+     * 通用接口
+     * @param string $url
+     * @param array $data
+     * @param array header
+     * @return array
+     */
+    public function post($url, $data, $headers=array()){
+        return $this->request($url, $data, $headers);
+    }
+
 }
