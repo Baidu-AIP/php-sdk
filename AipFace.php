@@ -103,12 +103,6 @@ class AipFace extends AipBase {
     private $personVerifyUrl = 'https://aip.baidubce.com/rest/2.0/face/v3/person/verify';
 
     /**
-     * 在线活体检测 faceverify api url
-     * @var string
-     */
-    private $faceverifyUrl = 'https://aip.baidubce.com/rest/2.0/face/v3/faceverify';
-
-    /**
      * 语音校验码接口 video_sessioncode api url
      * @var string
      */
@@ -129,7 +123,7 @@ class AipFace extends AipBase {
      * @param string $imageType - 图片类型 **BASE64**:图片的base64值，base64编码后的图片数据，需urlencode，编码后的图片大小不超过2M；**URL**:图片的 URL地址( 可能由于网络等原因导致下载图片时间过长)**；FACE_TOKEN**: 人脸图片的唯一标识，调用人脸检测接口时，会为每个人脸图片赋予一个唯一的FACE_TOKEN，同一张图片多次检测得到的FACE_TOKEN是同一个
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   face_field 包括age,beauty,expression,faceshape,gender,glasses,landmark,race,qualities信息，逗号分隔，默认只返回人脸框、概率和旋转角度
+     *   face_field 包括**age,beauty,expression,faceshape,gender,glasses,landmark,race,quality,facetype,parsing信息**  <br> 逗号分隔. 默认只返回face_token、人脸框、概率和旋转角度
      *   max_face_num 最多处理人脸的数目，默认值为1，仅检测图片中面积最大的那个人脸；**最大值10**，检测图片中面积最大的几张人脸。
      *   face_type 人脸的类型 **LIVE**表示生活照：通常为手机、相机拍摄的人像图片、或从网络获取的人像图片等**IDCARD**表示身份证芯片照：二代身份证内置芯片中的人像照片 **WATERMARK**表示带水印证件照：一般为带水印的小图，如公安网小图 **CERT**表示证件照片：如拍摄的身份证、工卡、护照、学生证等证件图片 默认**LIVE**
      * @return array
@@ -142,8 +136,9 @@ class AipFace extends AipBase {
         $data['image_type'] = $imageType;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->detectUrl, $data);
+        return $this->request($this->detectUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -151,25 +146,27 @@ class AipFace extends AipBase {
      *
      * @param string $image - 图片信息(**总数据大小应小于10M**)，图片上传方式根据image_type来判断
      * @param string $imageType - 图片类型 **BASE64**:图片的base64值，base64编码后的图片数据，需urlencode，编码后的图片大小不超过2M；**URL**:图片的 URL地址( 可能由于网络等原因导致下载图片时间过长)**；FACE_TOKEN**: 人脸图片的唯一标识，调用人脸检测接口时，会为每个人脸图片赋予一个唯一的FACE_TOKEN，同一张图片多次检测得到的FACE_TOKEN是同一个
+     * @param string $groupIdList - 从指定的group中进行查找 用逗号分隔，**上限20个**
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   group_id_list 从指定的group中进行查找 用逗号分隔，**上限20个**
      *   quality_control 图片质量控制  **NONE**: 不进行控制 **LOW**:较低的质量要求 **NORMAL**: 一般的质量要求 **HIGH**: 较高的质量要求 **默认 NONE**
      *   liveness_control 活体检测控制  **NONE**: 不进行控制 **LOW**:较低的活体要求(高通过率 低攻击拒绝率) **NORMAL**: 一般的活体要求(平衡的攻击拒绝率, 通过率) **HIGH**: 较高的活体要求(高攻击拒绝率 低通过率) **默认NONE**
      *   user_id 当需要对特定用户进行比对时，指定user_id进行比对。即人脸认证功能。
-     *   max_user_num 查找后返回的用户数量。返回相似度最高的几个用户，默认为1，最多返回5个。
+     *   max_user_num 查找后返回的用户数量。返回相似度最高的几个用户，默认为1，最多返回20个。
      * @return array
      */
-    public function search($image, $imageType, $options=array()){
+    public function search($image, $imageType, $groupIdList, $options=array()){
 
         $data = array();
         
         $data['image'] = $image;
         $data['image_type'] = $imageType;
+        $data['group_id_list'] = $groupIdList;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->searchUrl, $data);
+        return $this->request($this->searchUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -196,8 +193,9 @@ class AipFace extends AipBase {
         $data['user_id'] = $userId;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->userAddUrl, $data);
+        return $this->request($this->userAddUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -224,8 +222,9 @@ class AipFace extends AipBase {
         $data['user_id'] = $userId;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->userUpdateUrl, $data);
+        return $this->request($this->userUpdateUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -247,8 +246,9 @@ class AipFace extends AipBase {
         $data['face_token'] = $faceToken;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->faceDeleteUrl, $data);
+        return $this->request($this->faceDeleteUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -268,8 +268,9 @@ class AipFace extends AipBase {
         $data['group_id'] = $groupId;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->userGetUrl, $data);
+        return $this->request($this->userGetUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -289,8 +290,9 @@ class AipFace extends AipBase {
         $data['group_id'] = $groupId;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->faceGetlistUrl, $data);
+        return $this->request($this->faceGetlistUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -310,8 +312,9 @@ class AipFace extends AipBase {
         $data['group_id'] = $groupId;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->groupGetusersUrl, $data);
+        return $this->request($this->groupGetusersUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -331,8 +334,9 @@ class AipFace extends AipBase {
         $data['user_id'] = $userId;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->userCopyUrl, $data);
+        return $this->request($this->userCopyUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -352,8 +356,9 @@ class AipFace extends AipBase {
         $data['user_id'] = $userId;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->userDeleteUrl, $data);
+        return $this->request($this->userDeleteUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -371,8 +376,9 @@ class AipFace extends AipBase {
         $data['group_id'] = $groupId;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->groupAddUrl, $data);
+        return $this->request($this->groupAddUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -390,8 +396,9 @@ class AipFace extends AipBase {
         $data['group_id'] = $groupId;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->groupDeleteUrl, $data);
+        return $this->request($this->groupDeleteUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -409,8 +416,9 @@ class AipFace extends AipBase {
         
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->groupGetlistUrl, $data);
+        return $this->request($this->groupGetlistUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -436,30 +444,9 @@ class AipFace extends AipBase {
         $data['name'] = $name;
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->personVerifyUrl, $data);
-    }
-
-    /**
-     * 在线活体检测接口
-     *
-     * @param string $image - 图片信息(**总数据大小应小于10M**)，图片上传方式根据image_type来判断
-     * @param string $imageType - 图片类型 **BASE64**:图片的base64值，base64编码后的图片数据，需urlencode，编码后的图片大小不超过2M；**URL**:图片的 URL地址( 可能由于网络等原因导致下载图片时间过长)**；FACE_TOKEN**: 人脸图片的唯一标识，调用人脸检测接口时，会为每个人脸图片赋予一个唯一的FACE_TOKEN，同一张图片多次检测得到的FACE_TOKEN是同一个
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     *   face_fields 如不选择此项，返回结果默认只有人脸框、概率和旋转角度。可选参数为qualities、faceliveness。qualities：图片质量相关判断；faceliveness：活体判断。如果两个参数都需要选择，请使用半角逗号分隔。
-     * @return array
-     */
-    public function faceverify($image, $imageType, $options=array()){
-
-        $data = array();
-        
-        $data['image'] = $image;
-        $data['image_type'] = $imageType;
-
-        $data = array_merge($data, $options);
-
-        return $this->request($this->faceverifyUrl, $data);
+        return $this->request($this->personVerifyUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -476,8 +463,9 @@ class AipFace extends AipBase {
         
 
         $data = array_merge($data, $options);
-
-        return $this->request($this->videoSessioncodeUrl, $data);
+        return $this->request($this->videoSessioncodeUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
@@ -497,8 +485,27 @@ class AipFace extends AipBase {
         $data['video_base64'] = $videoBase64;
 
         $data = array_merge($data, $options);
+        return $this->request($this->videoFacelivenessUrl, json_encode($data),  array(
+            'Content-Type' => 'application/json',
+        ));
+    }
+    /**
+     * 在线活体检测 faceverify api url
+     * @var string
+     */
+    private $faceverifyUrl = 'https://aip.baidubce.com/rest/2.0/face/v3/faceverify';
 
-        return $this->request($this->videoFacelivenessUrl, $data);
+    /**
+     * 在线活体检测接口
+     *
+     * @param array $images
+     * @return array
+     */
+    public function faceverify($images){
+
+        return $this->request($this->faceverifyUrl, json_encode($images), array(
+            'Content-Type' => 'application/json',
+        ));
     }
 
     /**
