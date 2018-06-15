@@ -85,6 +85,18 @@ class AipNlp extends AipBase {
     private $topicUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/topic';
 
     /**
+     * 文本纠错 ecnet api url
+     * @var string
+     */
+    private $ecnetUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/ecnet';
+
+    /**
+     * 对话情绪识别接口 emotion api url
+     * @var string
+     */
+    private $emotionUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/emotion';
+
+    /**
      * 格式化结果
      * @param $content string
      * @return mixed
@@ -323,5 +335,46 @@ class AipNlp extends AipBase {
         $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
 
         return $this->request($this->topicUrl, $data);
+    }
+
+    /**
+     * 文本纠错接口
+     *
+     * @param string $text - 待纠错文本，输入限制511字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function ecnet($text, $options=array()){
+
+        $data = array();
+        
+        $data['text'] = $text;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->ecnetUrl, $data);
+    }
+
+    /**
+     * 对话情绪识别接口接口
+     *
+     * @param string $text - 待识别情感文本，输入限制512字节
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   scene default（默认项-不区分场景），talk（闲聊对话-如度秘聊天等），task（任务型对话-如导航对话等），customer_service（客服对话-如电信/银行客服等）
+     * @return array
+     */
+    public function emotion($text, $options=array()){
+
+        $data = array();
+        
+        $data['text'] = $text;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->emotionUrl, $data);
     }
 }

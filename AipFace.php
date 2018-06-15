@@ -108,12 +108,6 @@ class AipFace extends AipBase {
      */
     private $videoSessioncodeUrl = 'https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/sessioncode';
 
-    /**
-     * 视频活体检测接口 video_faceliveness api url
-     * @var string
-     */
-    private $videoFacelivenessUrl = 'https://aip.baidubce.com/rest/2.0/face/v1/faceliveness/verify';
-
     
 
     /**
@@ -123,7 +117,7 @@ class AipFace extends AipBase {
      * @param string $imageType - 图片类型 **BASE64**:图片的base64值，base64编码后的图片数据，需urlencode，编码后的图片大小不超过2M；**URL**:图片的 URL地址( 可能由于网络等原因导致下载图片时间过长)**；FACE_TOKEN**: 人脸图片的唯一标识，调用人脸检测接口时，会为每个人脸图片赋予一个唯一的FACE_TOKEN，同一张图片多次检测得到的FACE_TOKEN是同一个
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
-     *   face_field 包括**age,beauty,expression,faceshape,gender,glasses,landmark,race,quality,facetype,parsing信息**  <br> 逗号分隔. 默认只返回face_token、人脸框、概率和旋转角度
+     *   face_field 包括**age,beauty,expression,faceshape,gender,glasses,landmark,race,quality,facetype信息**  <br> 逗号分隔. 默认只返回face_token、人脸框、概率和旋转角度
      *   max_face_num 最多处理人脸的数目，默认值为1，仅检测图片中面积最大的那个人脸；**最大值10**，检测图片中面积最大的几张人脸。
      *   face_type 人脸的类型 **LIVE**表示生活照：通常为手机、相机拍摄的人像图片、或从网络获取的人像图片等**IDCARD**表示身份证芯片照：二代身份证内置芯片中的人像照片 **WATERMARK**表示带水印证件照：一般为带水印的小图，如公安网小图 **CERT**表示证件照片：如拍摄的身份证、工卡、护照、学生证等证件图片 默认**LIVE**
      * @return array
@@ -464,28 +458,6 @@ class AipFace extends AipBase {
 
         $data = array_merge($data, $options);
         return $this->request($this->videoSessioncodeUrl, json_encode($data),  array(
-            'Content-Type' => 'application/json',
-        ));
-    }
-
-    /**
-     * 视频活体检测接口接口
-     *
-     * @param string $sessionId - 语音校验码会话id，使用此接口的前提是已经调用了语音校验码接口
-     * @param string $videoBase64 - base64编码后的视频数据（视频限制：最佳为上传5-15s的mp4文件。视频编码方式：h264编码；音频编码格式：aac，pcm均可。）
-     * @param array $options - 可选参数对象，key: value都为string类型
-     * @description options列表:
-     * @return array
-     */
-    public function videoFaceliveness($sessionId, $videoBase64, $options=array()){
-
-        $data = array();
-        
-        $data['session_id'] = $sessionId;
-        $data['video_base64'] = $videoBase64;
-
-        $data = array_merge($data, $options);
-        return $this->request($this->videoFacelivenessUrl, json_encode($data),  array(
             'Content-Type' => 'application/json',
         ));
     }
