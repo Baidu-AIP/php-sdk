@@ -5,7 +5,7 @@
   ├── AipOcr.php                // OCR
   ├── AipNlp.php                // NLP
   ├── AipFace.php               // 人脸
-  ├── AipImageCensor.php        // 图像审核
+  ├── AipContentCensor.php      // 内容审核
   ├── AipImageClassify.php      // 图像识别
   ├── AipImageSearch.php        // 图像搜索
   ├── AipKg.php                 // 知识图谱
@@ -18,7 +18,13 @@
 
 **支持 PHP版本：5.3+**
 
-**安装步骤如下：**
+**Composer安装：**
+
+```
+  composer require baidu/aip-sdk
+```
+
+**手动安装步骤如下：**
 
 1. 下载PHP SDK。
 
