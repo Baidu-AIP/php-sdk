@@ -306,46 +306,24 @@ class AipSampleSigner
     public static function getHeadersToSign($headers, $headersToSign)
     {
 
+        $arr = array();
+        foreach ($headersToSign as $value) {
+            $arr[] = strtolower(trim($value));
+        }
+
         //value被trim后为空串的header不参与签名
-        $filter_empty = function($v) {
-            return trim((string) $v) !== '';
-        };
-        $headers = array_filter($headers, $filter_empty);
-
-        //处理headers的key：去掉前后的空白并转化成小写
-        $trim_and_lower = function($str){
-            return strtolower(trim($str));
-        };
-        $temp = array();
-        $process_keys = function($k, $v) use(&$temp, $trim_and_lower) {
-            $temp[$trim_and_lower($k)] = $v;
-        };
-        array_map($process_keys, array_keys($headers), $headers);
-        $headers = $temp;
-
-        //取出headers的key以备用
-        $header_keys = array_keys($headers);
-
-        $filtered_keys = null;
-        if ($headersToSign !== null) {
-            //如果有headersToSign，则根据headersToSign过滤
-
-            //预处理headersToSign：去掉前后的空白并转化成小写
-            $headersToSign = array_map($trim_and_lower, $headersToSign);
-
-            //只选取在headersToSign里面的header
-            $filtered_keys = array_intersect_key($header_keys, $headersToSign);
-
-        } else {
-            //如果没有headersToSign，则根据默认规则来选取headers
-            $filter_by_default = function($k) {
-                return AipSampleSigner::isDefaultHeaderToSign($k);
-            };
-            $filtered_keys = array_filter($header_keys, $filter_by_default);
+        $result = array();
+        foreach ($headers as $key => $value) {
+            if (trim($value) !== '') {
+                $key = strtolower(trim($key));
+                if (in_array($key, $arr)) {
+                    $result[$key] = $value;
+                } 
+            }
         }
 
         //返回需要参与签名的header
-        return array_intersect_key($headers, array_flip($filtered_keys));
+        return $result;
     }
 
     /**

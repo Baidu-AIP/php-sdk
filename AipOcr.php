@@ -98,6 +98,18 @@ class AipOcr extends AipBase {
     private $receiptUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/receipt';
 
     /**
+     * 火车票识别 train_ticket api url
+     * @var string
+     */
+    private $trainTicketUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/train_ticket';
+
+    /**
+     * 出租车票识别 taxi_receipt api url
+     * @var string
+     */
+    private $taxiReceiptUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/taxi_receipt';
+
+    /**
      * 表格文字识别同步接口 form api url
      * @var string
      */
@@ -536,6 +548,44 @@ class AipOcr extends AipBase {
         $data = array_merge($data, $options);
 
         return $this->request($this->receiptUrl, $data);
+    }
+
+    /**
+     * 火车票识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function trainTicket($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->trainTicketUrl, $data);
+    }
+
+    /**
+     * 出租车票识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function taxiReceipt($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->taxiReceiptUrl, $data);
     }
 
     /**

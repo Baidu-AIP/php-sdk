@@ -97,6 +97,12 @@ class AipNlp extends AipBase {
     private $emotionUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/emotion';
 
     /**
+     * 新闻摘要接口 news_summary api url
+     * @var string
+     */
+    private $newsSummaryUrl = 'https://aip.baidubce.com/rpc/2.0/nlp/v1/news_summary';
+
+    /**
      * 格式化结果
      * @param $content string
      * @return mixed
@@ -376,5 +382,28 @@ class AipNlp extends AipBase {
         $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
 
         return $this->request($this->emotionUrl, $data);
+    }
+
+    /**
+     * 新闻摘要接口接口
+     *
+     * @param string $content - 字符串（限200字符数）字符串仅支持GBK编码，长度需小于200字符数（即400字节），请输入前确认字符数没有超限，若字符数超长会返回错误。标题在算法中具有重要的作用，若文章确无标题，输入参数的“标题”字段为空即可
+     * @param integer $maxSummaryLen - 此数值将作为摘要结果的最大长度。例如：原文长度1000字，本参数设置为150，则摘要结果的最大长度是150字；推荐最优区间：200-500字
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   title 字符串（限200字符数）字符串仅支持GBK编码，长度需小于200字符数（即400字节），请输入前确认字符数没有超限，若字符数超长会返回错误。标题在算法中具有重要的作用，若文章确无标题，输入参数的“标题”字段为空即可
+     * @return array
+     */
+    public function newsSummary($content, $maxSummaryLen, $options=array()){
+
+        $data = array();
+        
+        $data['content'] = $content;
+        $data['max_summary_len'] = $maxSummaryLen;
+
+        $data = array_merge($data, $options);
+        $data = mb_convert_encoding(json_encode($data), 'GBK', 'UTF8');
+
+        return $this->request($this->newsSummaryUrl, $data);
     }
 }

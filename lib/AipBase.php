@@ -46,7 +46,7 @@ class AipBase {
      * @var string
      */
     protected $apiKey = '';
-    
+
     /**
      * secretKey
      * @var string
@@ -60,7 +60,7 @@ class AipBase {
     protected $scope = 'brain_all_scope';
 
     /**
-     * @param string $appId 
+     * @param string $appId
      * @param string $apiKey
      * @param string $secretKey
      */
@@ -70,18 +70,18 @@ class AipBase {
         $this->secretKey = trim($secretKey);
         $this->isCloudUser = null;
         $this->client = new AipHttpClient();
-        $this->version = '2_2_5';
+        $this->version = '2_2_11';
         $this->proxies = array();
     }
 
     /**
      * 查看版本
      * @return string
-     * 
+     *
      */
     public function getVersion(){
         return $this->version;
-    }    
+    }
 
     /**
      * 连接超时
@@ -103,11 +103,11 @@ class AipBase {
      * 代理
      * @param array $proxy
      * @return string
-     * 
+     *
      */
     public function setProxies($proxies){
         $this->client->setConf($proxies);
-    } 
+    }
 
     /**
      * 处理请求参数
@@ -143,10 +143,10 @@ class AipBase {
 
             // 特殊处理
             $this->proccessRequest($url, $params, $data, $headers);
- 
+
             $headers = $this->getAuthHeaders('POST', $url, $params, $headers);
             $response = $this->client->post($url, $data, $params, $headers);
- 
+
             $obj = $this->proccessResult($response['content']);
 
             if(!$this->isCloudUser && isset($obj['error_code']) && $obj['error_code'] == 110){
@@ -302,7 +302,7 @@ class AipBase {
             'client_id' => $this->apiKey,
             'client_secret' => $this->secretKey,
         ));
-        
+
         $obj = json_decode($response['content'], true);
 
         $this->isCloudUser = !$this->isPermission($obj);
@@ -311,8 +311,8 @@ class AipBase {
 
     /**
      * 判断认证是否有权限
-     * @param  array   $authObj 
-     * @return boolean          
+     * @param  array   $authObj
+     * @return boolean
      */
     protected function isPermission($authObj)
     {
@@ -332,14 +332,14 @@ class AipBase {
      * @return array
      */
     private function getAuthHeaders($method, $url, $params=array(), $headers=array()){
-        
+
         //不是云的老用户则不用在header中签名 认证
         if($this->isCloudUser === false){
             return $headers;
         }
 
         $obj = parse_url($url);
-        if(!empty($obj['query'])){        
+        if(!empty($obj['query'])){
             foreach(explode('&', $obj['query']) as $kv){
                 if(!empty($kv)){
                     list($k, $v) = explode('=', $kv, 2);
@@ -374,7 +374,7 @@ class AipBase {
     public function report($feedback){
 
         $data = array();
-        
+
         $data['feedback'] = $feedback;
 
         return $this->request($this->reportUrl, $data);
