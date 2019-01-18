@@ -1,5 +1,5 @@
 {
-    "name": "baidu/aip-sdk",
+    "name": "baidu-aip-sdk",
     "description": "baidu pulic ai php sdk",
     "authors": [
         {
@@ -16,7 +16,6 @@
             "AipBodyAnalysis.php",
             "AipContentCensor.php",
             "AipFace.php",
-            "AipImageCensor.php",
             "AipImageClassify.php",
             "AipImageSearch.php",
             "AipKg.php",
