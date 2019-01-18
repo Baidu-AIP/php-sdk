@@ -6,10 +6,11 @@
             "name": "baidu"
         }
     ],
-    "license": "MIT",
+    "license": "Apache-2.0",
     "require": {
         "php": ">=5.3.3"
     },
+    "minimum-stability": "stable",
     "autoload": {
         "files": [
             "lib/AipBase.php",
