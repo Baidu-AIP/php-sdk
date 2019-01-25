@@ -787,17 +787,17 @@ class AipOcr extends AipBase {
      * 自定义模板文字识别接口
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
-     * @param string $templateSign - 您在自定义文字识别平台制作的模板的ID
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
+     *   templateSign 您在自定义文字识别平台制作的模板的ID
+     *   classifierId 分类器Id。这个参数和templateSign至少存在一个，优先使用templateSign。存在templateSign时，表示使用指定模板；如果没有templateSign而有classifierId，表示使用分类器去判断使用哪个模板
      * @return array
      */
-    public function custom($image, $templateSign, $options=array()){
+    public function custom($image, $options=array()){
 
         $data = array();
         
         $data['image'] = base64_encode($image);
-        $data['templateSign'] = $templateSign;
 
         $data = array_merge($data, $options);
 
