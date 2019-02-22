@@ -25,7 +25,7 @@ class AipBodyAnalysis extends AipBase {
     private $bodyAnalysisUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/body_analysis';
 
     /**
-     * 人体属性识别 body_attr api url
+     * 人体检测与属性识别 body_attr api url
      * @var string
      */
     private $bodyAttrUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/body_attr';
@@ -47,6 +47,12 @@ class AipBodyAnalysis extends AipBase {
      * @var string
      */
     private $bodySegUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/body_seg';
+
+    /**
+     * 驾驶行为分析 driver_behavior api url
+     * @var string
+     */
+    private $driverBehaviorUrl = 'https://aip.baidubce.com/rest/2.0/image-classify/v1/driver_behavior';
 
     /**
      * 人流量统计-动态版 body_tracking api url
@@ -76,7 +82,7 @@ class AipBodyAnalysis extends AipBase {
     }
 
     /**
-     * 人体属性识别接口
+     * 人体检测与属性识别接口
      *
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
@@ -141,6 +147,7 @@ class AipBodyAnalysis extends AipBase {
      * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
      * @param array $options - 可选参数对象，key: value都为string类型
      * @description options列表:
+     *   type 可以通过设置type参数，自主设置返回哪些结果图，避免造成带宽的浪费<br>1）可选值说明：<br>labelmap - 二值图像，需二次处理方能查看分割效果<br>scoremap - 人像前景灰度图<br>foreground - 人像前景抠图，透明背景<br>2）type 参数值可以是可选值的组合，用逗号分隔；如果无此参数默认输出全部3类结果图
      * @return array
      */
     public function bodySeg($image, $options=array()){
@@ -152,6 +159,26 @@ class AipBodyAnalysis extends AipBase {
         $data = array_merge($data, $options);
 
         return $this->request($this->bodySegUrl, $data);
+    }
+
+    /**
+     * 驾驶行为分析接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   type smoke,cellphone,<br>not_buckling_up,<br>both_hands_leaving_wheel,<br>not_facing_front |识别的属性行为类别，英文逗号分隔，默认所有属性都识别；<br>smoke //吸烟，<br>cellphone //打手机 ，<br>not_buckling_up // 未系安全带，<br>both_hands_leaving_wheel // 双手离开方向盘，<br>not_facing_front // 视角未看前方
+     * @return array
+     */
+    public function driverBehavior($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->driverBehaviorUrl, $data);
     }
 
     /**
