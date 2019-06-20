@@ -70,7 +70,7 @@ class AipBase {
         $this->secretKey = trim($secretKey);
         $this->isCloudUser = null;
         $this->client = new AipHttpClient();
-        $this->version = '2_2_13';
+        $this->version = '2_2_17';
         $this->proxies = array();
     }
 

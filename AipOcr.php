@@ -128,6 +128,72 @@ class AipOcr extends AipBase {
     private $tableResultGetUrl = 'https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/get_request_result';
 
     /**
+     * VIN码识别 vin_code api url
+     * @var string
+     */
+    private $vinCodeUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/vin_code';
+
+    /**
+     * 定额发票识别 quota_invoice api url
+     * @var string
+     */
+    private $quotaInvoiceUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/quota_invoice';
+
+    /**
+     * 户口本识别 household_register api url
+     * @var string
+     */
+    private $householdRegisterUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/household_register';
+
+    /**
+     * 港澳通行证识别 HK_Macau_exitentrypermit api url
+     * @var string
+     */
+    private $HKMacauExitentrypermitUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/HK_Macau_exitentrypermit';
+
+    /**
+     * 台湾通行证识别 taiwan_exitentrypermit api url
+     * @var string
+     */
+    private $taiwanExitentrypermitUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/taiwan_exitentrypermit';
+
+    /**
+     * 出生医学证明识别 birth_certificate api url
+     * @var string
+     */
+    private $birthCertificateUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/birth_certificate';
+
+    /**
+     * 机动车销售发票识别 vehicle_invoice api url
+     * @var string
+     */
+    private $vehicleInvoiceUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_invoice';
+
+    /**
+     * 车辆合格证识别 vehicle_certificate api url
+     * @var string
+     */
+    private $vehicleCertificateUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/vehicle_certificate';
+
+    /**
+     * 税务局通用机打发票识别 invoice api url
+     * @var string
+     */
+    private $invoiceUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/invoice';
+
+    /**
+     * 行程单识别 air_ticket api url
+     * @var string
+     */
+    private $airTicketUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/air_ticket';
+
+    /**
+     * 保单识别 insurance_documents api url
+     * @var string
+     */
+    private $insuranceDocumentsUrl = 'https://aip.baidubce.com/rest/2.0/ocr/v1/insurance_documents';
+
+    /**
      * 增值税发票识别 vat_invoice api url
      * @var string
      */
@@ -644,6 +710,218 @@ class AipOcr extends AipBase {
         $data = array_merge($data, $options);
 
         return $this->request($this->tableResultGetUrl, $data);
+    }
+
+    /**
+     * VIN码识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function vinCode($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->vinCodeUrl, $data);
+    }
+
+    /**
+     * 定额发票识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function quotaInvoice($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->quotaInvoiceUrl, $data);
+    }
+
+    /**
+     * 户口本识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function householdRegister($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->householdRegisterUrl, $data);
+    }
+
+    /**
+     * 港澳通行证识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function HKMacauExitentrypermit($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->HKMacauExitentrypermitUrl, $data);
+    }
+
+    /**
+     * 台湾通行证识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function taiwanExitentrypermit($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->taiwanExitentrypermitUrl, $data);
+    }
+
+    /**
+     * 出生医学证明识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function birthCertificate($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->birthCertificateUrl, $data);
+    }
+
+    /**
+     * 机动车销售发票识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function vehicleInvoice($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->vehicleInvoiceUrl, $data);
+    }
+
+    /**
+     * 车辆合格证识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     * @return array
+     */
+    public function vehicleCertificate($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->vehicleCertificateUrl, $data);
+    }
+
+    /**
+     * 税务局通用机打发票识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   location 是否输出位置信息，true：输出位置信息，false：不输出位置信息，默认false
+     * @return array
+     */
+    public function invoice($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->invoiceUrl, $data);
+    }
+
+    /**
+     * 行程单识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   location 是否输出位置信息，true：输出位置信息，false：不输出位置信息，默认false
+     * @return array
+     */
+    public function airTicket($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->airTicketUrl, $data);
+    }
+
+    /**
+     * 保单识别接口
+     *
+     * @param string $image - 图像数据，base64编码，要求base64编码后大小不超过4M，最短边至少15px，最长边最大4096px,支持jpg/png/bmp格式
+     * @param array $options - 可选参数对象，key: value都为string类型
+     * @description options列表:
+     *   rkv_business 是否进行商业逻辑处理，rue：进行商业逻辑处理，false：不进行商业逻辑处理，默认true
+     * @return array
+     */
+    public function insuranceDocuments($image, $options=array()){
+
+        $data = array();
+        
+        $data['image'] = base64_encode($image);
+
+        $data = array_merge($data, $options);
+
+        return $this->request($this->insuranceDocumentsUrl, $data);
     }
 
     /**
